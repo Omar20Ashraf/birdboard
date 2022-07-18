@@ -10,4 +10,10 @@ class Project extends Model
     use HasFactory;
 
     protected $fillable = ['title', 'description'];
+
+    public function path()
+    {
+        # code...
+        return "/projects/{$this->id}";
+    }
 }

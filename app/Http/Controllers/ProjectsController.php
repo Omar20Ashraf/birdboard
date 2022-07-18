@@ -23,4 +23,11 @@ class ProjectsController extends Controller
 
         return redirect('/projects');
     }
+
+    public function show(Project $project)
+    {
+        # code...
+
+        return ['title' => $project->title,'description' => $project->description];
+    }
 }

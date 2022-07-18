@@ -17,6 +17,8 @@ Route::get('/', function () {
     return view('welcome');
 });
 
+Route::get('/home', 'App\Http\Controllers\HomeController@index')->name('home');
+
 Route::get('/projects', 'App\Http\Controllers\ProjectsController@index');
-Route::post('/projects','App\Http\Controllers\ProjectsController@store');
+Route::post('/projects','App\Http\Controllers\ProjectsController@store')->middleware('auth');
 Route::get('/projects/{project}','App\Http\Controllers\ProjectsController@show');

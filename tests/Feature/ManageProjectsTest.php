@@ -8,34 +8,19 @@ use App\Models\Project;
 use Illuminate\Foundation\Testing\WithFaker;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 
-class ProjectsTest extends TestCase
+class ManageProjectsTest extends TestCase
 {
     use WithFaker,RefreshDatabase;
 
     /** @test  */
-    public function guest_cannot_create_project()
-    {
-        $data = Project::factory()->raw();
-
-        $this->post('/projects', $data)
-            ->assertRedirect('login');
-    }
-
-    /** @test  */
-    public function guest_cannot_view_project()
-    {
-        $data = Project::factory()->raw();
-
-        $this->get('/projects', $data)
-            ->assertRedirect('login');
-    }
-
-    /** @test  */
-    public function guest_cannot_view_single_project()
+    public function guest_cannot_control_project()
     {
         $project = Project::factory()->create();
 
+        $this->get('/projects')->assertRedirect('login');
+        $this->get('/projects/create')->assertRedirect('login');
         $this->get($project->path())->assertRedirect('login');
+        $this->post('/projects', $project->toArray())->assertRedirect('login');
     }
 
     /** @test  */
@@ -45,12 +30,13 @@ class ProjectsTest extends TestCase
 
         $this->actingAs(User::factory()->create());
 
+        $this->get('/projects/create')->assertStatus(200);
+
         $user = User::first();
 
         $data = Project::factory()->raw(['owner_id' => $user->id]);
 
-        $this->post('/projects', $data)
-            ->assertRedirect('/projects');
+        $this->post('/projects', $data)->assertRedirect('/projects');
 
         $this->assertDatabaseHas('projects', $data);
     }
@@ -87,8 +73,7 @@ class ProjectsTest extends TestCase
 
         $data = Project::factory()->raw(['title' => '']);
 
-        $this->post('/projects', $data)
-            ->assertSessionHasErrors('title');
+        $this->post('/projects', $data)->assertSessionHasErrors('title');
     }
 
     /** @test  */
@@ -97,7 +82,6 @@ class ProjectsTest extends TestCase
         $this->actingAs(User::factory()->create());
         $data = Project::factory()->raw(['description' => '']);
 
-        $this->post('/projects', $data)
-            ->assertSessionHasErrors('description');
+        $this->post('/projects', $data)->assertSessionHasErrors('description');
     }
 }

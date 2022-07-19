@@ -17,13 +17,19 @@ Route::get('/', function () {
     return view('welcome');
 });
 
-Route::get('/home', 'App\Http\Controllers\HomeController@index')->name('home');
 
-Route::controller('App\Http\Controllers\ProjectsController')->middleware('auth')->group(function(){
+Route::middleware('auth')->group(function(){
 
-    Route::get('/projects', 'index');
-    Route::post('/projects', 'store');
-    Route::get('/projects/{project}', 'show');
+    Route::get('/home', 'App\Http\Controllers\HomeController@index')->name('home');
+
+    Route::controller('App\Http\Controllers\ProjectsController')->group(function(){
+
+        Route::get('/projects', 'index');
+        Route::get('/projects/create', 'create');
+        Route::post('/projects', 'store');
+        Route::get('/projects/{project}', 'show');
+    });
 });
+
 
 

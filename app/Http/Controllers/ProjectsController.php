@@ -13,6 +13,10 @@ class ProjectsController extends Controller
         # code...
     }
 
+    public function create()
+    {
+        # code...
+    }
 
     public function store()
     {

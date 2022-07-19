@@ -19,6 +19,11 @@ Route::get('/', function () {
 
 Route::get('/home', 'App\Http\Controllers\HomeController@index')->name('home');
 
-Route::get('/projects', 'App\Http\Controllers\ProjectsController@index');
-Route::post('/projects','App\Http\Controllers\ProjectsController@store')->middleware('auth');
-Route::get('/projects/{project}','App\Http\Controllers\ProjectsController@show');
+Route::controller('App\Http\Controllers\ProjectsController')->middleware('auth')->group(function(){
+
+    Route::get('/projects', 'index');
+    Route::post('/projects', 'store');
+    Route::get('/projects/{project}', 'show');
+});
+
+

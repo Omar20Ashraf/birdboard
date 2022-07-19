@@ -30,7 +30,9 @@ class ProjectsController extends Controller
     public function show(Project $project)
     {
         # code...
-
+        if(auth()->user()->isNot($project->owner)){
+            abort(403);
+        }
         return ['title' => $project->title,'description' => $project->description];
     }
 }

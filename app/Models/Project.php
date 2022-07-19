@@ -20,4 +20,11 @@ class Project extends Model
         # code...
         return "/projects/{$this->id}";
     }
+
+
+    public function owner()
+    {
+        # code...
+        return $this->belongsTo(User::class,'owner_id');
+    }
 }

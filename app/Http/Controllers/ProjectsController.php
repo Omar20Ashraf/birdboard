@@ -11,11 +11,15 @@ class ProjectsController extends Controller
     public function index()
     {
         # code...
+        $projects = auth()->user()->projects;
+
+        return view('projects.index',compact('projects'));
     }
 
     public function create()
     {
         # code...
+        return view('projects.create');
     }
 
     public function store()
@@ -37,6 +41,7 @@ class ProjectsController extends Controller
         if(auth()->user()->isNot($project->owner)){
             abort(403);
         }
-        return ['title' => $project->title,'description' => $project->description];
+
+        return view('projects.show', compact('project'));
     }
 }

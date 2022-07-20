@@ -21,10 +21,21 @@ class Project extends Model
         return "/projects/{$this->id}";
     }
 
-
     public function owner()
     {
         # code...
         return $this->belongsTo(User::class,'owner_id');
+    }
+
+    public function tasks()
+    {
+        # code...
+        return $this->hasMany(Task::class,'project_id');
+    }
+
+    public function addTask($data)
+    {
+        # code...
+        return $this->tasks()->create($data);
     }
 }
